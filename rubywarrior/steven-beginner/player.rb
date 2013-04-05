@@ -2,32 +2,62 @@ class Player
   
   def initialize()
   	@health = 20
+    @direccion = false
   end
 
   def play_turn(warrior)
 
-  	if warrior.feel.enemy?
+    @direccion = !@direccion if self.feel(warrior).wall?
+
+    feel = self.feel(warrior)
+
+  	if feel.enemy?
     	warrior.attack!
-    elsif warrior.feel.captive?
-      warrior.rescue!
-    else
-      if self.been_attached?(warrior) || warrior.health > 15
-        warrior.walk!
+
+    elsif feel.captive?
+
+      self.rescue!(warrior)
+
+    elsif self.been_attached?(warrior)
+
+      if warrior.health < 10
+        self.go_back!(warrior)
       else
-        warrior.rest!
+        self.walk!(warrior)
       end
+
+    elsif warrior.health > 15 || feel.stairs?
+      
+      self.walk!(warrior)
+
+    else
+       warrior.rest!
+
     end
   		
   	@health = warrior.health
 
-  	puts "Healt #{ @health }"
+  end
 
+  def go_back!(warrior)
+    @direccion ? warrior.walk!(:backward) : warrior.walk!
   end
 
   def been_attached?(warrior)
   	warrior.health < @health
   end
 
+  def rescue!(warrior)
+    @direccion ? warrior.rescue! : warrior.rescue!(:backward)
+  end
+
+  def feel(warrior)
+    @direccion ? warrior.feel : warrior.feel(:backward)
+  end
+
+  def walk!(warrior)
+    @direccion ? warrior.walk! : warrior.walk!(:backward)
+  end
 
 end
 
