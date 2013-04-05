@@ -2,7 +2,7 @@ class Player
   
   def initialize()
   	@health = 20
-    @shots = 0
+    @shots = false
   end
 
   def play_turn(warrior)
@@ -16,7 +16,7 @@ class Player
     elsif warrior.feel.enemy?
       warrior.attack!
 
-    elsif self.been_attached?(warrior)
+    elsif self.been_attacked?(warrior)
       
       if warrior.health < 10 && self.enemy_distance(warrior) > 2
         warrior.walk! :backward
@@ -26,16 +26,19 @@ class Player
 
     elsif self.attack_distance?( warrior )
       
-      if @shoot == 0
-        warrior.shoot!
-        @shoot += 1
-      else
-        if warrior.health < 10
+      if @shoot
+        if warrior.health < 15
           warrior.rest!
         else
           warrior.walk!
         end
-        @shoot = 0
+
+        @shoot = false
+
+      else
+        warrior.shoot!
+        @shoot = true
+        
       end
 
     elsif warrior.health > 15 || self.look_stairs?(warrior)
@@ -61,8 +64,10 @@ class Player
   end
 
   def look_stairs?(warrior)
-    warrior.look.each { |feel| 
-      return true if feel.stairs?
+    stairs =  false
+    warrior.look.each { |feel|
+      return false if feel.enemy?
+      stairs =  true if feel.stairs?
     }
   end
 
@@ -80,7 +85,7 @@ class Player
     enemy
   end
 
-  def been_attached?(warrior)
+  def been_attacked?(warrior)
   	warrior.health < @health
   end
 
