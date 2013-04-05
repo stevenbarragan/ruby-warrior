@@ -9,6 +9,9 @@ class Player
     if warrior.feel.wall?
       warrior.pivot!
 
+    elsif self.attack_distance?( warrior )
+      warrior.shoot!
+
   	elsif warrior.feel.enemy?
     	warrior.attack!
 
@@ -32,6 +35,20 @@ class Player
   		
   	@health = warrior.health
 
+  end
+
+  def attack_distance?(warrior)
+    enemy = false
+    
+    warrior.look.each { |feel|
+      if feel.enemy?
+        enemy = true
+      elsif feel.captive?
+        return false
+      end
+    }
+
+    enemy
   end
 
   def been_attached?(warrior)
