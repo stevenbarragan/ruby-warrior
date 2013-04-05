@@ -5,20 +5,23 @@ class Player
   end
 
   def play_turn(warrior)
-  	if warrior.feel.empty?
-  		if self.been_attached?(warrior) || warrior.health > 15
-	    	warrior.walk!
-	    else
-	    	warrior.rest!
-	    end
-    else
+
+  	if warrior.feel.enemy?
     	warrior.attack!
+    elsif warrior.feel.captive?
+      warrior.rescue!
+    else
+      if self.been_attached?(warrior) || warrior.health > 15
+        warrior.walk!
+      else
+        warrior.rest!
+      end
+    end
   		
   	@health = warrior.health
 
   	puts "Healt #{ @health }"
 
-    end
   end
 
   def been_attached?(warrior)
