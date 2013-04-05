@@ -9,21 +9,22 @@ class Player
     if warrior.feel.wall?
       warrior.pivot!
 
-    elsif self.attack_distance?( warrior )
-      warrior.shoot!
-
-  	elsif warrior.feel.enemy?
-    	warrior.attack!
-
     elsif warrior.feel.captive?
       warrior.rescue!
 
+    elsif warrior.feel.enemy?
+      warrior.attack!
+      
     elsif self.been_attached?(warrior)
       if warrior.health < 10
         warrior.walk! :backward
       else
         warrior.walk!
       end
+
+    elsif self.attack_distance?( warrior )
+      warrior.shoot!
+
 
     elsif warrior.health > 15 || warrior.feel.stairs?
       warrior.walk!
