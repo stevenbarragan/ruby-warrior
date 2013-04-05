@@ -26,13 +26,18 @@ class Player
       
       if warrior.health < 15 && self.enemy_distance(warrior) > 1
         warrior.walk! :backward
+      elsif self.wissard_forward?(warrior)
+        warrior.shoot!
+        @shoot = false
       else
         warrior.walk!
+        @shoot = false
       end
 
     elsif self.attack_distance?( warrior )
 
       puts "attack_distance"
+      puts "shoot #{@shoot}"
       
       if @shoot
         
@@ -72,8 +77,10 @@ class Player
 
   end
 
-  def walk_rest(warrior)
-    
+  def wissard_forward?(warrior)
+    puts "Last_health #{@health}"
+    puts "health #{warrior.health}"
+    @health - warrior.health == 11
   end
 
   def cautive_back?(warrior)
