@@ -2,33 +2,28 @@ class Player
   
   def initialize()
   	@health = 20
-    @direccion = false
   end
 
   def play_turn(warrior)
 
-    @direccion = !@direccion if self.feel(warrior).wall?
+    if warrior.feel.wall?
+      warrior.pivot!
 
-    feel = self.feel(warrior)
-
-  	if feel.enemy?
+  	elsif warrior.feel.enemy?
     	warrior.attack!
 
-    elsif feel.captive?
-
-      self.rescue!(warrior)
+    elsif warrior.feel.captive?
+      warrior.rescue!
 
     elsif self.been_attached?(warrior)
-
       if warrior.health < 10
-        self.go_back!(warrior)
+        warrior.walk! :backward
       else
-        self.walk!(warrior)
+        warrior.walk!
       end
 
-    elsif warrior.health > 15 || feel.stairs?
-      
-      self.walk!(warrior)
+    elsif warrior.health > 15 || warrior.feel.stairs?
+      warrior.walk!
 
     else
        warrior.rest!
@@ -39,24 +34,8 @@ class Player
 
   end
 
-  def go_back!(warrior)
-    @direccion ? warrior.walk!(:backward) : warrior.walk!
-  end
-
   def been_attached?(warrior)
   	warrior.health < @health
-  end
-
-  def rescue!(warrior)
-    @direccion ? warrior.rescue! : warrior.rescue!(:backward)
-  end
-
-  def feel(warrior)
-    @direccion ? warrior.feel : warrior.feel(:backward)
-  end
-
-  def walk!(warrior)
-    @direccion ? warrior.walk! : warrior.walk!(:backward)
   end
 
 end
