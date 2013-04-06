@@ -20,9 +20,6 @@ class Player
       warrior.attack!
 
     elsif self.been_attacked?(warrior)
-
-      puts "been_attacked"
-      puts "enemy_distance #{self.enemy_distance(warrior)}"
       
       if warrior.health < 15 && self.enemy_distance(warrior) > 1
         warrior.walk! :backward
@@ -37,12 +34,8 @@ class Player
         @shoot = false
         
       end
-      
 
     elsif self.attack_distance?( warrior )
-
-      puts "attack_distance"
-      puts "shoot #{@shoot}"
 
       if warrior.health > 9
         
@@ -65,10 +58,6 @@ class Player
       end
 
     elsif warrior.health > 12 || self.look_stairs?(warrior)
-      puts "walt "
-      puts "warrior.health > 15 #{warrior.health}"
-      puts "look_stairs #{self.look_stairs?(warrior)}"
-
       warrior.walk!
 
     else
@@ -81,8 +70,6 @@ class Player
   end
 
   def wissard_forward?(warrior)
-    puts "Last_health #{@health}"
-    puts "health #{warrior.health}"
     @health - warrior.health == 11
   end
 
