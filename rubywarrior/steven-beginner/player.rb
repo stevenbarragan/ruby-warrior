@@ -19,13 +19,13 @@ class Player
     elsif warrior.feel.enemy?
       warrior.attack!
 
-    elsif self.been_attacked?(warrior)
+    elsif been_attacked?(warrior)
       
-      if warrior.health < 15 && self.enemy_distance(warrior) > 1
+      if warrior.health < 15 && enemy_distance(warrior) > 1
         warrior.walk! :backward
         @shoot = false
 
-      elsif self.wissard_forward?(warrior)
+      elsif wissard_forward?(warrior)
         warrior.shoot!
         @shoot = true
 
@@ -34,12 +34,12 @@ class Player
         @shoot = false
         
       end
-
-    elsif self.attack_distance?( warrior )
+      
+    elsif attack_distance?( warrior )
 
       if warrior.health > 9
         
-        if self.cautive_back?(warrior)
+        if cautive_back?(warrior)
           warrior.walk! :backward
         else
           warrior.walk!
@@ -57,7 +57,7 @@ class Player
         
       end
 
-    elsif warrior.health > 12 || self.look_stairs?(warrior)
+    elsif warrior.health > 12 || look_stairs?(warrior)
       warrior.walk!
 
     else
