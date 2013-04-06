@@ -41,21 +41,19 @@ class Player
 
       puts "attack_distance"
       puts "shoot #{@shoot}"
-      
-      if @shoot || warrior.health > 11
+
+      if warrior.health > 11
         
-        if warrior.health < 15
-          warrior.rest!
+        if self.cautive_back?(warrior)
+          warrior.walk! :backward
         else
-
-          if self.cautive_back?(warrior)
-            warrior.walk! :backward
-          else
-            warrior.walk!
-          end
-
+          warrior.walk!
         end
 
+        # @shoot = false
+      
+      elsif @shoot
+        warrior.rest!
         @shoot = false
 
       else
@@ -64,7 +62,7 @@ class Player
         
       end
 
-    elsif warrior.health > 15 || self.look_stairs?(warrior)
+    elsif warrior.health > 12 || self.look_stairs?(warrior)
       puts "walt "
       puts "warrior.health > 15 #{warrior.health}"
       puts "look_stairs #{self.look_stairs?(warrior)}"
