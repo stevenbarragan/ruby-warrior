@@ -26,20 +26,23 @@ class Player
       
       if warrior.health < 15 && self.enemy_distance(warrior) > 1
         warrior.walk! :backward
+
       elsif self.wissard_forward?(warrior)
         warrior.shoot!
-        @shoot = false
+
       else
         warrior.walk!
-        @shoot = false
+        
       end
+      
+      @shoot = false
 
     elsif self.attack_distance?( warrior )
 
       puts "attack_distance"
       puts "shoot #{@shoot}"
       
-      if @shoot
+      if @shoot || warrior.health > 11
         
         if warrior.health < 15
           warrior.rest!
@@ -106,7 +109,7 @@ class Player
 
     for feel in warrior.look
       return false if feel.enemy?
-      stairs =  true if feel.stairs?
+      stairs = true if feel.stairs?
     end
 
     stairs
