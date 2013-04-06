@@ -2,7 +2,7 @@ class Player
   
   def initialize()
   	@health = 20
-    @shots = false
+    @shoot = false
   end
 
   def play_turn(warrior)
