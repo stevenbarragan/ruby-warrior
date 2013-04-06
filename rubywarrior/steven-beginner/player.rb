@@ -7,7 +7,7 @@ class Player
 
   def play_turn(warrior)
 
-    if warrior.feel.wall?
+    if just_wall?(warrior)
       warrior.pivot!
 
     elsif warrior.feel.captive?
@@ -66,6 +66,19 @@ class Player
     end
   		
   	@health = warrior.health
+
+  end
+
+  def just_wall?(warrior)
+    wall = 0
+    objects = 0
+    
+    for feel in warrior.look
+      objects += 1 unless feel.empty? && !feel.stairs?
+      wall += 1 if feel.wall?
+    end
+
+    wall > 0 && objects <= wall ? true : false
 
   end
 
